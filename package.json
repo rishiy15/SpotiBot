@@ -9,12 +9,25 @@
   },
   "author": "Rishi Yemme",
   "dependencies": {
-    "body-parser": "~1.17.1",
+    "body-parser": "^1.17.1",
     "cookie-parser": "~1.4.3",
     "debug": "~2.6.3",
-    "express": "~4.15.2",
+    "express": "^4.15.3",
     "jade": "~1.11.0",
+    "mongoose": "^4.9.9",
     "morgan": "~1.8.1",
+    "request": "^2.81.0",
     "serve-favicon": "~2.4.2"
-  }
+  },
+  "description": "A Facebook Messenger bot that helps you find the freshest music on Spotify.",
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rishiy15/SpotiBot.git"
+  },
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/rishiy15/SpotiBot/issues"
+  },
+  "homepage": "https://github.com/rishiy15/SpotiBot#readme"
 }
