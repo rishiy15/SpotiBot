@@ -1,6 +1,7 @@
 var express = require('express');
 var request = require('request');
 var bodyParser = require('body-parser');
+var apiaiApp = require('apiai')(CLIENT_ACCESS_TOKEN);
 
 var app = express();
 app.use(bodyParser.urlencoded({extended: false}));
@@ -26,6 +27,7 @@ app.get("/webhook", function (req, res) {
 
 // All callbacks for Messenger will be POST-ed here
 app.post("/webhook", function (req, res) {
+    console.log(req.body);
     // Make sure this is a page subscription
     if (req.body.object == "page") {
         // Iterate over each entry
@@ -66,27 +68,44 @@ function processPostback(event) {
                 name = bodyObj.first_name;
                 greeting = "Hi " + name + ". ";
             }
-            var message = greeting + "My name is Spotibot. I can tell you various details regarding music. What music you into?";
+            var message = greeting + "My name is Spotibot. I can tell you a lot about musical artists. Do you have a Spotify account?";
             sendMessage(senderId, {text: message});
         });
     }
 }
 
-// sends message to user
+// sends message to user using api.ai's api
+//for initial response, api.ai will not be used
 function sendMessage(recipientId, message) {
-    request({
-        url: "https://graph.facebook.com/v2.6/me/messages",
-        qs: {access_token: process.env.PAGE_ACCESS_TOKEN},
-        method: "POST",
-        json: {
-            recipient: {id: recipientId},
-            message: message,
-        }
-    }, function(error, response, body) {
-        if (error) {
-            console.log("Error sending message: " + response.error);
-        }
+    let apiai = apiaiApp.textRequest(message, {
+        sessionId: 'talk_spotify'
     });
+
+
+
+    apiai.on('response', (response)=>{
+        let aiText = response.fulfillment.speech;
+
+        request({
+            url: "https://graph.facebook.com/v2.6/me/messages",
+            qs: {access_token: process.env.PAGE_ACCESS_TOKEN},
+            method: "POST",
+            json: {
+                recipient: {id: recipientId},
+                message: {message : aiText}
+            }
+        }, function(error, response, body) {
+            if (error) {
+                console.log("Error sending message: " + response.error);
+            }
+        });
+    });
+
+    apiai.on('error',(error)=> {
+        console.log(error);
+    });
+
+    apiai.end();
 }
 
 
