@@ -1,4 +1,4 @@
-var express = require('express');
+let express = require('express');
 var request = require('request');
 var bodyParser = require('body-parser');
 var apiaiApp = require('apiai')(CLIENT_ACCESS_TOKEN);
@@ -29,7 +29,7 @@ app.get("/webhook", function (req, res) {
 app.post("/webhook", function (req, res) {
     console.log(req.body);
     // Make sure this is a page subscription
-    if (req.body.object === "page") {
+    if (req.body.object == "page") {
         // Iterate over each entry
         // There may be multiple entries if batched
         req.body.entry.forEach(function(entry) {
