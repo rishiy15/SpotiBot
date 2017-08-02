@@ -37,9 +37,14 @@ app.post("/webhook", function (req, res) {
         req.body.entry.forEach(function(entry) {
             // Iterate over each messaging event
             entry.messaging.forEach(function(event) {
-                 if(event.message && event.message.text){
+                if(event.message && event.message.text){
                     //sendMessage(event);
+                    if(isFirstTime){
+                        processPostback(event.sender.id,event.message.text);
+                        isFirstTime = false;
+                    }
                     sendGreeting(event.sender.id,event.message.text);
+
                 }
             });
         });
@@ -52,7 +57,7 @@ function processPostback(event) {
     var senderId = event.sender.id;
     var payload = event.postback.payload;
 
-    if (payload === "Greeting") {
+    //if (payload === "Greeting") {
         // Get user's first name from the User Profile API
         // and include it in the greeting
         request({
@@ -74,7 +79,7 @@ function processPostback(event) {
             var message = greeting + "My name is Spotibot. I can tell you a lot about musical artists. Who do you want to know about?";
             sendGreeting(senderId, {text: message});
         });
-    }
+    //}
 }
 
 function sendGreeting(recipientId, message){
