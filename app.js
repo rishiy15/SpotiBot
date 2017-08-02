@@ -81,7 +81,7 @@ function sendGreeting(recipientId, message){
     let msg = "HELLO";
     request({
         url: "https://graph.facebook.com/v2.6/me/messages",
-        qs: {access_token: process.env.PAGE_ACCESS_TOKEN},
+        qs: {access_token:'EAAZAJXkNkvQABAP9uqn4fy76coFoHh4kGUkuW8vvFBqosGwAlCvwTAvFv5WZAB9i1JssBxDu66pSuunb7ZA6WZAB7vzppLZAO9iHO4n885ZBMEBZCnt7JLLQPIGv7puTAcF5uuIqNd6BRZB3dYJna7t5TmdYA0oArHxIhxQPEY3c26qgazxHiCqj'},//process.env.PAGE_ACCESS_TOKEN
         method: 'POST',
         json: {
             recipient: {id: recipientId},
