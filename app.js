@@ -40,7 +40,7 @@ app.post("/webhook", function (req, res) {
                 if (event.postback) {
                     processPostback(event);
                 }else if(event.message && event.message.text){
-                    aiResponse();
+                    sendMessage(event);
                 }
             });
         });
@@ -73,59 +73,59 @@ function processPostback(event) {
                 greeting = "Hi " + name + ". ";
             }
             var message = greeting + "My name is Spotibot. I can tell you a lot about musical artists. Who do you want to know about?";
-            sendMessage(senderId, {text: message});
+            sendGreeting(senderId, {text: message});
         });
     }
 }
 
-// sends message to user using api.ai's api
-function sendMessage(recipientId, message) {
+function sendGreeting(recipientId, message){
+    request({
+        url: "https://graph.facebook.com/v2.6/me/messages",
+        qs: {access_token: process.env.PAGE_ACCESS_TOKEN},
+        method: "POST",
+        json: {
+            recipient: {id: recipientId},
+            message: message,
+        }
+    }, function(error, response, body) {
+        if (error) {
+            console.log("Error sending message: " + response.error);
+        }
+    });
+}
 
-    if(isFirstTime){
+// sends message to user using api.ai's api
+function sendMessage(event) {
+    let sender = event.sender.id;
+    let text = event.message.text;
+
+    let apiai = apiaiApp.textRequest(text, {
+        sessionId: 'talk_spotify'
+    });
+
+    apiai.on('response', (response)=>{
+        let aiText = response.fulfillment.speech;
+
         request({
             url: "https://graph.facebook.com/v2.6/me/messages",
             qs: {access_token: process.env.PAGE_ACCESS_TOKEN},
-           method: "POST",
+            method: "POST",
             json: {
-              recipient: {id: recipientId},
-              message: message,
-                }
-            }, function(error, response, body) {
+                recipient: {id: sender},
+                message: {message : aiText}
+            }
+        }, function(error, response, body) {
             if (error) {
                 console.log("Error sending message: " + response.error);
             }
         });
-        isFirstTime = false;
-    }else{
-        let apiai = apiaiApp.textRequest(message, {
-            sessionId: 'talk_spotify'
-        });
+    });
 
-        apiai.on('response', (response)=>{
-            let aiText = response.fulfillment.speech;
+    apiai.on('error',(error)=> {
+        console.log(error);
+    });
 
-            request({
-                url: "https://graph.facebook.com/v2.6/me/messages",
-                qs: {access_token: process.env.PAGE_ACCESS_TOKEN},
-                method: "POST",
-                json: {
-                    recipient: {id: recipientId},
-                    message: {message : aiText}
-                }
-            }, function(error, response, body) {
-                if (error) {
-                    console.log("Error sending message: " + response.error);
-                }
-            });
-        });
-
-        apiai.on('error',(error)=> {
-            console.log(error);
-        });
-
-        apiai.end();
-    }
-
+    apiai.end();
 
 }
 
