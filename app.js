@@ -38,8 +38,8 @@ app.post("/webhook", function (req, res) {
             // Iterate over each messaging event
             entry.messaging.forEach(function(event) {
                  if(event.message && event.message.text){
-                    sendMessage(event);
-                     //sendGreeting(event.sender.id,event.message.text);
+                    //sendMessage(event);
+                    sendGreeting(event.sender.id,event.message.text);
                 }
             });
         });
@@ -78,13 +78,14 @@ function processPostback(event) {
 }
 
 function sendGreeting(recipientId, message){
+    let msg = "HELLO";
     request({
         url: "https://graph.facebook.com/v2.6/me/messages",
         qs: {access_token: process.env.PAGE_ACCESS_TOKEN},
-        method: "POST",
+        method: 'POST',
         json: {
             recipient: {id: recipientId},
-            message: message,
+            message: msg,
         }
     }, function(error, response, body) {
         if (error) {
@@ -106,9 +107,9 @@ function sendMessage(event) {
         let aiText = response.fulfillment.speech;
 
         request({
-            url: "https://graph.facebook.com/v2.6/me/messages",
+            url: 'https://graph.facebook.com/v2.6/me/messages',
             qs: {access_token: process.env.PAGE_ACCESS_TOKEN},
-            method: "POST",
+            method: 'POST',
             json: {
                 recipient: {id: sender},
                 message: {message : aiText}
