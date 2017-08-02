@@ -76,20 +76,19 @@ function processPostback(event) {
                 greeting = "Hi " + name + ". ";
             }
             var message = greeting + "My name is Spotibot. I can tell you a lot about musical artists. Who do you want to know about?";
-            sendGreeting(senderId, {text: message});
+            sendGreeting(senderId, message);
         });
     }
 }
 
 function sendGreeting(recipientId, message){
-    let text = message;
     request({
         url: "https://graph.facebook.com/v2.6/me/messages",
         qs: {access_token: process.env.PAGE_ACCESS_TOKEN},
         method: 'POST',
         json: {
             recipient: {id: recipientId},
-            message: {text: text},
+            message: {text: message},
         }
     }, function(error, response, body) {
         if (error) {
