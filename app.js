@@ -8,7 +8,7 @@ app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
 app.listen((process.env.PORT || 5000));
 
-let isFirstTime = true;
+let isFirstTime = false;
 
 // Server index page
 app.get("/", function (req, res) {
@@ -27,6 +27,8 @@ app.get("/webhook", function (req, res) {
     }
 });
 
+
+
 // All callbacks for Messenger will be POST-ed here
 app.post("/webhook", function (req, res) {
     console.log(req.body);
@@ -39,10 +41,10 @@ app.post("/webhook", function (req, res) {
             entry.messaging.forEach(function(event) {
                 if(event.message && event.message.text){
                     //sendMessage(event);
-                    // if(isFirstTime){
-                    //     processPostback(event.sender.id,event.message.text);
-                    //     isFirstTime = false;
-                    // }
+                    if(isFirstTime){
+                        processPostback(event.sender.id,event.message.text);
+                        isFirstTime = false;
+                    }
                     sendGreeting(event.sender.id,event.message.text);
 
                 }
