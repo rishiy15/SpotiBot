@@ -38,8 +38,8 @@ app.post("/webhook", function (req, res) {
             // Iterate over each messaging event
             entry.messaging.forEach(function(event) {
                  if(event.message && event.message.text){
-                    //sendMessage(event);
-                     sendGreeting(event.sender.id,event.message.text);
+                    sendMessage(event);
+                     //sendGreeting(event.sender.id,event.message.text);
                 }
             });
         });
