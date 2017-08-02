@@ -122,7 +122,7 @@ app.post('/ai', (req, res)=>{
             }
         });
     }
-})
+});
 
 
 // catch 404 and forward to error handler

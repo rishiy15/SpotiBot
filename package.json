@@ -17,7 +17,8 @@
     "mongoose": "^4.9.9",
     "morgan": "~1.8.1",
     "request": "^2.81.0",
-    "serve-favicon": "~2.4.2"
+    "serve-favicon": "~2.4.2",
+    "apiai": "latest"
   },
   "description": "A Facebook Messenger bot that helps you find the freshest music on Spotify.",
   "devDependencies": {},
