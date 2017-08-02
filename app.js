@@ -78,14 +78,14 @@ function processPostback(event) {
 }
 
 function sendGreeting(recipientId, message){
-    let msg = "HELLO";
+    let text = message;
     request({
-        url: "https://graph.facebook.com/v2.9/me/messages",
+        url: "https://graph.facebook.com/v2.6/me/messages",
         qs: {access_token: process.env.PAGE_ACCESS_TOKEN},
         method: 'POST',
         json: {
             recipient: {id: recipientId},
-            message: msg,
+            message: {text: text},
         }
     }, function(error, response, body) {
         if (error) {
