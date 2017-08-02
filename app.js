@@ -39,10 +39,10 @@ app.post("/webhook", function (req, res) {
             entry.messaging.forEach(function(event) {
                 if(event.message && event.message.text){
                     //sendMessage(event);
-                    if(isFirstTime){
-                        processPostback(event.sender.id,event.message.text);
-                        isFirstTime = false;
-                    }
+                    // if(isFirstTime){
+                    //     processPostback(event.sender.id,event.message.text);
+                    //     isFirstTime = false;
+                    // }
                     sendGreeting(event.sender.id,event.message.text);
 
                 }
@@ -66,7 +66,7 @@ function processPostback(event) {
                 access_token: process.env.PAGE_ACCESS_TOKEN,
                 fields: "first_name"
             },
-            method: "GET"
+            method: 'GET'
         }, function(error, response, body) {
             var greeting = "";
             if (error) {
