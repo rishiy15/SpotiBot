@@ -31,7 +31,7 @@ app.get("/webhook", function (req, res) {
 app.post("/webhook", function (req, res) {
     console.log(req.body);
     // Make sure this is a page subscription
-    if (req.body.object == "page") {
+    if (req.body.object === "page") {
         // Iterate over each entry
         // There may be multiple entries if batched
         req.body.entry.forEach(function(entry) {
@@ -112,9 +112,11 @@ function sendMessage(event) {
                 recipient: {id: sender},
                 message: {message : aiText}
             }
-        }, function(error, response, body) {
+        }, (error, response) => {
             if (error) {
                 console.log("Error sending message: " + response.error);
+            } else if (response.body.error){
+                console.log('Error: ', response.body.error);
             }
         });
     });
