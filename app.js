@@ -68,7 +68,7 @@ function processPostback(event) {
                 name = bodyObj.first_name;
                 greeting = "Hi " + name + ". ";
             }
-            var message = greeting + "My name is Spotibot. I can tell you a lot about musical artists. Who do you waant to know about?";
+            var message = greeting + "My name is Spotibot. I can tell you a lot about musical artists. Who do you want to know about?";
             sendMessage(senderId, {text: message});
         });
     }
@@ -105,24 +105,24 @@ function sendMessage(recipientId, message) {
     apiai.end();
 }
 
-app.post('/ai', (req, res)=>{
-    if(req.body.result.action === 'artist'){
-        //call music artist api
-        request({
-            url: "https://graph.facebook.com/v2.6/me/messages",
-            qs: {access_token: process.env.PAGE_ACCESS_TOKEN},
-            method: "POST",
-            json: {
-                recipient: {id: recipientId},
-                message: {message : "ACTION RECEIVED"}
-            }
-        }, function(error, response, body) {
-            if (error) {
-                console.log("Error sending message: " + response.error);
-            }
-        });
-    }
-});
+// app.post('/ai', (req, res)=>{
+//     if(req.body.result.action === 'artist'){
+//         //call music artist api
+//         request({
+//             url: "https://graph.facebook.com/v2.6/me/messages",
+//             qs: {access_token: process.env.PAGE_ACCESS_TOKEN},
+//             method: "POST",
+//             json: {
+//                 recipient: {id: recipientId},
+//                 message: {message : "ACTION RECEIVED"}
+//             }
+//         }, function(error, response, body) {
+//             if (error) {
+//                 console.log("Error sending message: " + response.error);
+//             }
+//         });
+//     }
+// });
 
 
 // catch 404 and forward to error handler
