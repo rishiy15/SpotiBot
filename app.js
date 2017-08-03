@@ -43,7 +43,7 @@ app.post("/webhook", function (req, res) {
                     processPostback(event);
                 }else if(event.message && event.message.text){
                     //sendMessage(event);
-                    sendGreeting(event.sender.id,event.message.text);
+                    sendMessage(event);
                 }
             });
         });
