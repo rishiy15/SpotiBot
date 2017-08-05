@@ -140,10 +140,10 @@ function sendMessage(event) {
             request({
                 url: "https://graph.facebook.com/v2.6/me/messages",
                 qs: {access_token: process.env.PAGE_ACCESS_TOKEN},
-                method: "POST",
+                method: 'POST',
                 json: {
                     recipient: {id: recipientId},
-                    message: {message : "ACTION RECEIVED"}
+                    message: {text : "ACTION RECEIVED"}
                 }
             }, function(error, response, body) {
                 if (error) {
