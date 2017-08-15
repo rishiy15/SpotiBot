@@ -137,22 +137,38 @@ app.post('/ai', (req, res)=>{
     if(req.body.result.action === 'artist'){
         //call music artist api
         let artist = req.body.result.paramters['artist'];
-        let resUrl;
+        let baseUrl = "http://api.music-story.com/artist/search";
 
-        request.get(restUrl, (err, response, body) => {
-            if (!err && response.statusCode === 200) {
-                let json = JSON.parse(body);
-                let msg = "Here's what's happening with " + artist + ": ";
+        request.get('http://api.music-story.com/artist/search',{
+            oauth:{
+                consumer_key: process.env.CONSUMER_KEY,
+                consumer_secret: process.env.CONSUMER_SECRET,
+                token: process.env.ACCESS_TOKEN,
+                token_secret: process.env.TOKEN_SECRET
+            },
+            qs:{name: artist},
+            json: true
+        }, function(error,res,body){
+            if(!error && res.statusCode == 200){
+                let jsonObj = JSON.parse(body);
+                let artist_id = jsonObj.id;
+                let msg = 'Artist id is ' + artist_id;
+
                 return res.json({
                     speech: msg,
-                    displayText: msg,
-                    source: 'artist'});
-            } else {
+                    displayText:msg,
+                    source: 'artist'
+                });
+
+            }else{
                 return res.status(400).json({
                     status: {
                         code: 400,
-                        errorType: 'I failed to look up the artist name.'}});
-            }})
+                        errorType: 'Failed to look up artist name'
+                    }
+                });
+            }
+        })
     }
 });
 
