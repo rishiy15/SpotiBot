@@ -1,14 +1,13 @@
 let express = require('express');
 var request = require('request');
 var bodyParser = require('body-parser');
-var apiaiApp = require('apiai')('5b6a68b93f784e83b745ba07b0d42516');
+var apiaiApp = require('apiai')(process.env.CLIENTAI_ACCESS_TOKEN);
 
 var app = express();
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
 app.listen((process.env.PORT || 5000));
 
-let isFirstTime = false;
 
 // Server index page
 app.get("/", function (req, res) {
@@ -134,24 +133,28 @@ function sendMessage(event) {
 
 }
 
-    app.post('/ai', (req, res)=>{
-        if(req.body.result.action === 'artist'){
-            //call music artist api
-            request({
-                url: "https://graph.facebook.com/v2.6/me/messages",
-                qs: {access_token: process.env.PAGE_ACCESS_TOKEN},
-                method: 'POST',
-                json: {
-                    recipient: {id: recipientId},
-                    message: {text : "ACTION RECEIVED"}
-                }
-            }, function(error, response, body) {
-                if (error) {
-                    console.log("Error sending message: " + response.error);
-                }
-            });
-        }
-    });
+app.post('/ai', (req, res)=>{
+    if(req.body.result.action === 'artist'){
+        //call music artist api
+        let artist = req.body.result.paramters['artist'];
+        let resUrl;
+
+        request.get(restUrl, (err, response, body) => {
+            if (!err && response.statusCode === 200) {
+                let json = JSON.parse(body);
+                let msg = "Here's what's happening with " + artist + ": ";
+                return res.json({
+                    speech: msg,
+                    displayText: msg,
+                    source: 'artist'});
+            } else {
+                return res.status(400).json({
+                    status: {
+                        code: 400,
+                        errorType: 'I failed to look up the artist name.'}});
+            }})
+    }
+});
 
 
 
