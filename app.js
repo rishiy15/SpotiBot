@@ -173,6 +173,10 @@ app.post('/ai', (req, res)=>{
         //     }
         // })
     }
+    return res.json({
+        speech: 'ACTION RESPONSE',
+        displayText: 'ACTION RESPONSE'
+    });
 });
 
 
