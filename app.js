@@ -138,37 +138,40 @@ app.post('/ai', (req, res)=>{
         //call music artist api
         let artist = req.body.result.paramters['artist'];
         let baseUrl = "http://api.music-story.com/artist/search";
-
-        request.get('http://api.music-story.com/artist/search',{
-            oauth:{
-                consumer_key: process.env.CONSUMER_KEY,
-                consumer_secret: process.env.CONSUMER_SECRET,
-                token: process.env.ACCESS_TOKEN,
-                token_secret: process.env.TOKEN_SECRET
-            },
-            qs:{name: artist},
-            json: true
-        }, function(error,res,body){
-            if(!error && res.statusCode == 200){
-                let jsonObj = JSON.parse(body);
-                let artist_id = jsonObj.id;
-                let msg = 'Artist id is ' + artist_id;
-
-                return res.json({
-                    speech: msg,
-                    displayText:msg,
-                    source: 'artist'
-                });
-
-            }else{
-                return res.status(400).json({
-                    status: {
-                        code: 400,
-                        errorType: 'Failed to look up artist name'
-                    }
-                });
-            }
-        })
+        return res.json({
+            speech: 'ACTION RESPONSE',
+            displayText: 'ACTION RESPONSE'
+        });
+        // request.get('http://api.music-story.com/artist/search',{
+        //     oauth:{
+        //         consumer_key: process.env.CONSUMER_KEY,
+        //         consumer_secret: process.env.CONSUMER_SECRET,
+        //         token: process.env.ACCESS_TOKEN,
+        //         token_secret: process.env.TOKEN_SECRET
+        //     },
+        //     qs:{name: artist},
+        //     json: true
+        // }, function(error,res,body){
+        //     if(!error && res.statusCode == 200){
+        //         let jsonObj = JSON.parse(body);
+        //         let artist_id = jsonObj.id;
+        //         let msg = 'Artist id is ' + artist_id;
+        //
+        //         return res.json({
+        //             speech: msg,
+        //             displayText:msg,
+        //             source: 'artist'
+        //         });
+        //
+        //     }else{
+        //         return res.status(400).json({
+        //             status: {
+        //                 code: 400,
+        //                 errorType: 'Failed to look up artist name'
+        //             }
+        //         });
+        //     }
+        // })
     }
 });
 
