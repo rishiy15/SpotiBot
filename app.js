@@ -138,9 +138,11 @@ app.post('/ai', (req, res)=>{
         //call music artist api
         let artist = req.body.result.paramters['artist'];
         let baseUrl = "http://api.music-story.com/artist/search";
+        let msg = 'ACTION RESPONSE';
         return res.json({
-            speech: 'ACTION RESPONSE',
-            displayText: 'ACTION RESPONSE'
+            speech: msg,
+            displayText: msg,
+            source: 'artist'
         });
         // request.get('http://api.music-story.com/artist/search',{
         //     oauth:{
@@ -173,10 +175,6 @@ app.post('/ai', (req, res)=>{
         //     }
         // })
     }
-    return res.json({
-        speech: 'ACTION RESPONSE',
-        displayText: 'ACTION RESPONSE'
-    });
 });
 
 
