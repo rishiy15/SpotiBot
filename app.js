@@ -134,6 +134,8 @@ function sendMessage(event) {
 }
 
 app.post('/ai', (req, res)=>{
+    console.log('*** Webhook for api.ai query ***');
+    console.log(req.body.result)
     if(req.body.result.action === 'artist'){
         //call music artist api
         let artist = req.body.result.paramters['artist'];
